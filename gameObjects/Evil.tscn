@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://gameObjects/Evil.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/block.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/plbound.png" type="Texture" id=3]
+[ext_resource path="res://assets/sounds/score.wav" type="AudioStream" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4, 200 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 6, 100 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 48 )
+
+[node name="Evil" type="KinematicBody2D"]
+script = ExtResource( 1 )
+
+[node name="spawnerImage" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="EvilCol" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -200 )
+shape = SubResource( 1 )
+
+[node name="GameOverArea" type="Area2D" parent="."]
+position = Vector2( 0, -100 )
+
+[node name="GameOverCol" type="CollisionShape2D" parent="GameOverArea"]
+shape = SubResource( 3 )
+
+[node name="FaceArea" type="Area2D" parent="."]
+
+[node name="FaceSprite" type="Sprite" parent="FaceArea"]
+position = Vector2( 16, 0 )
+texture = ExtResource( 3 )
+
+[node name="FaceCol" type="CollisionShape2D" parent="FaceArea"]
+shape = SubResource( 2 )
+
+[node name="ScoreSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[connection signal="body_entered" from="GameOverArea" to="." method="_on_GameOverArea_body_entered"]
+[connection signal="area_entered" from="FaceArea" to="." method="_on_FaceArea_area_entered"]
